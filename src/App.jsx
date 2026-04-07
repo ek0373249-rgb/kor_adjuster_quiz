@@ -13,7 +13,7 @@ function App() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`${import.meta.env.BASE_URL}data/questions.json`)
+        fetch('data/questions.json')
             .then(res => res.json())
             .then(data => {
                 setQuestions(data);
