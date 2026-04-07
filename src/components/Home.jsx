@@ -16,19 +16,41 @@ function Home({ startQuiz }) {
         }
     }, []);
 
-    const themes = [
-        { id: 'fire', name: '화재보험', icon: '🔥', desc: '1~60번 문항' },
-        { id: 'inland', name: '동산종합보험', icon: '📦', desc: '61~120번 문항' },
-        { id: 'package', name: '패키지보험', icon: '📦', desc: '121~180번 문항' },
-        { id: 'bi', name: '기업휴지보험', icon: '⏳', desc: '181~240번 문항' },
-        { id: 'reinsurance', name: '재보험', icon: '🤝', desc: '241~300번 문항' },
-        { id: 'ox', name: 'OX 특화 문제', icon: '📝', desc: '301~400번 문항' },
-    ];
+    const [activeSubject, setActiveSubject] = useState('재산보험');
+
+    const allThemes = {
+        '재산보험': [
+            { id: 'fire', name: '화재보험', icon: '🔥', desc: '1~60번 문항' },
+            { id: 'inland', name: '동산종합보험', icon: '📦', desc: '61~120번 문항' },
+            { id: 'package', name: '패키지보험', icon: '📦', desc: '121~180번 문항' },
+            { id: 'bi', name: '기업휴지보험', icon: '⏳', desc: '181~240번 문항' },
+            { id: 'reinsurance', name: '재보험', icon: '🤝', desc: '241~300번 문항' },
+            { id: 'ox', name: 'OX 특화 문제', icon: '📝', desc: '301~400번 문항' },
+        ],
+        '배상책임보험': [
+            { id: 'liab_gen', name: '일반 영업배상', icon: '🏢', desc: '401~460번 문항' },
+            { id: 'liab_prof', name: '전문직업 배상', icon: '👨‍⚕️', desc: '461~520번 문항' },
+            { id: 'liab_worker', name: '근로자재해보상', icon: '👷', desc: '521~580번 문항' },
+            { id: 'liab_comp', name: '의무 배상책임', icon: '⚖️', desc: '581~640번 문항' },
+        ],
+        '특종보험': [
+            { id: 'spec_eng', name: '기술보험 (Engineering)', icon: '🏗️', desc: '641~700번 문항' },
+            { id: 'spec_misc', name: '기타 특종 (동산/도난)', icon: '💎', desc: '701~760번 문항' },
+            { id: 'spec_credit', name: '신용 및 보증보험', icon: '💳', desc: '761~820번 문항' },
+        ],
+        '해상보험': [
+            { id: 'marine_cargo', name: '적하보험', icon: '🚢', desc: '821~880번 문항' },
+            { id: 'marine_hull', name: '선박보험', icon: '⚓', desc: '881~940번 문항' },
+            { id: 'marine_liab', name: '해상 배상책임', icon: '🌊', desc: '941~1000번 문항' },
+            { id: 'marine_adj', name: '해상 손해사정', icon: '🔎', desc: '1001~1060번 문항' },
+        ]
+    };
 
     const subjects = [
-        { title: '재산보험', status: '학습 가능', active: true },
-        { title: '특종보험', status: '준비 중', active: false },
-        { title: '배상책임보험', status: '준비 중', active: false },
+        { title: '재산보험', icon: '🏠' },
+        { title: '배상책임보험', icon: '⚖️' },
+        { title: '특종보험', icon: '🔧' },
+        { title: '해상보험', icon: '⛴️' }
     ];
 
     return (
@@ -39,16 +61,23 @@ function Home({ startQuiz }) {
             </header>
 
             <section style={{ marginTop: '40px' }}>
-                <h2 style={{ fontSize: '1.2rem', marginBottom: '20px', color: 'var(--primary-color)' }}>과목 선택 (Subject)</h2>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
+                <h2 style={{ fontSize: '1.2rem', marginBottom: '20px', color: 'var(--primary-color)' }}>과목 대분류 선택 (Subject)</h2>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '15px' }}>
                     {subjects.map((sub, idx) => (
                         <div
                             key={idx}
-                            className="glass"
-                            style={{ padding: '24px', opacity: sub.active ? 1 : 0.5, cursor: sub.active ? 'pointer' : 'default' }}
+                            onClick={() => setActiveSubject(sub.title)}
+                            className={`glass ${activeSubject === sub.title ? 'active-tab' : ''}`}
+                            style={{ 
+                                padding: '20px', 
+                                cursor: 'pointer', 
+                                transition: 'all 0.3s ease',
+                                border: activeSubject === sub.title ? '1px solid var(--primary-color)' : '1px solid rgba(255,255,255,0.1)',
+                                textAlign: 'center'
+                            }}
                         >
-                            <h3 style={{ marginBottom: '8px' }}>{sub.title}</h3>
-                            <span style={{ fontSize: '0.8rem', color: sub.active ? 'var(--accent-color)' : 'gray' }}>{sub.status}</span>
+                            <div style={{ fontSize: '1.5rem', marginBottom: '5px' }}>{sub.icon}</div>
+                            <h3 style={{ fontSize: '1rem' }}>{sub.title}</h3>
                         </div>
                     ))}
                 </div>
@@ -90,9 +119,9 @@ function Home({ startQuiz }) {
             </section>
 
             <section style={{ marginTop: '40px' }}>
-                <h2 style={{ fontSize: '1.2rem', marginBottom: '20px' }}>재산보험 테마별 집중 학습</h2>
+                <h2 style={{ fontSize: '1.2rem', marginBottom: '20px' }}>{activeSubject} 상세 테마</h2>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                    {themes.map(t => (
+                    {allThemes[activeSubject].map(t => (
                         <button
                             key={t.id}
                             className="glass"

@@ -35,12 +35,27 @@ function App() {
             setSelectedTheme(`wrong_${minCount}`);
         } else if (theme) {
             const ranges = {
+                // 재산보험 (Property)
                 'fire': [0, 60],
                 'inland': [60, 120],
                 'package': [120, 180],
                 'bi': [180, 240],
                 'reinsurance': [240, 300],
-                'ox': [300, 400]
+                'ox': [300, 400],
+                // 배상책임보험 (Liability)
+                'liab_gen': [400, 460],
+                'liab_prof': [460, 520],
+                'liab_worker': [520, 580],
+                'liab_comp': [580, 640],
+                // 특종보험 (Specialty)
+                'spec_eng': [640, 700],
+                'spec_misc': [700, 760],
+                'spec_credit': [760, 820],
+                // 해상보험 (Marine)
+                'marine_cargo': [820, 880],
+                'marine_hull': [880, 940],
+                'marine_liab': [940, 1000],
+                'marine_adj': [1000, 1060]
             };
             const range = ranges[theme];
             if (range) {

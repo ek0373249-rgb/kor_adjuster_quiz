@@ -78,3 +78,8 @@ button:active {
 .fade-in {
   animation: fadeIn 0.5s ease forwards;
 }
+
+.active-tab {
+  background: rgba(0, 163, 255, 0.1) !important;
+  box-shadow: 0 0 20px rgba(0, 163, 255, 0.2);
+}
